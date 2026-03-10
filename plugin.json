@@ -1,0 +1,6 @@
+{
+  "name": "claude-startup-validator",
+  "version": "1.0.0",
+  "description": "Claude Skill that validates and generates AI startup ideas — scores opportunities on 6 dimensions, maps competitors, analyzes failed predecessors, and stress-tests against 10 startup failure patterns.",
+  "skills": ["ai-startup-opportunity-generator"]
+}
