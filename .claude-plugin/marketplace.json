@@ -1,0 +1,25 @@
+{
+  "name": "claude-startup-validator",
+  "owner": {
+    "name": "nmsavaliya"
+  },
+  "metadata": {
+    "description": "AI Startup Opportunity Generator — validate and generate AI startup ideas with competitor analysis, failure risk assessment, and 6-dimension scoring.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-startup-validator",
+      "source": "./plugins/claude-startup-validator",
+      "description": "Claude Skill that validates and generates AI startup ideas — scores opportunities on 6 dimensions, maps competitors, analyzes failed predecessors, and stress-tests against 10 startup failure patterns.",
+      "version": "1.0.0",
+      "author": {
+        "name": "nmsavaliya"
+      },
+      "repository": "https://github.com/nmsavaliya/claude-startup-validator",
+      "license": "MIT",
+      "keywords": ["startup", "ai", "business", "validation", "competitor-analysis", "idea-generation"],
+      "category": "productivity"
+    }
+  ]
+}

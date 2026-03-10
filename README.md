@@ -94,25 +94,78 @@ Give me AI startup ideas for industries that still rely heavily on manual data e
 - OR **Claude.ai** account (Pro/Team/Enterprise)
 - OR **Claude Cowork** workspace
 
-### Method 1: Claude Code — Git Clone (Recommended)
+### Method 1: `/plugin` Install (Recommended)
+
+The easiest way — two commands in Claude Code:
 
 ```bash
-# Step 1: Navigate to your Claude Code skills directory
-cd ~/.claude/skills/
+# Step 1: Add the marketplace
+/plugin marketplace add nmsavaliya/claude-startup-validator
 
-# Step 2: Clone the repository
-git clone https://github.com/nmsavaliya/claude-startup-validator.git ai-startup-opportunity-generator
-
-# Step 3: Verify the installation
-ls ~/.claude/skills/ai-startup-opportunity-generator/SKILL.md
-# Should output the file path — if it does, you're set
+# Step 2: Install the plugin
+/plugin install claude-startup-validator
 ```
 
-**Done!** Start a new Claude Code session and ask for AI startup ideas.
+Or use the interactive UI:
 
-### Method 2: Claude Code — Manual Download
+```
+1. Type /plugin in Claude Code
+2. Go to "Marketplaces" tab → Add → nmsavaliya/claude-startup-validator
+3. Go to "Discover" tab → Find "claude-startup-validator" → Install
+4. Restart Claude Code
+```
 
-If you prefer not to use git:
+**Done!** The skill is now available globally.
+
+### Method 2: Clone + Settings (Manual Plugin Install)
+
+If you prefer manual installation:
+
+```bash
+# Step 1: Clone the repo anywhere you like
+git clone https://github.com/nmsavaliya/claude-startup-validator.git ~/claude-plugins/claude-startup-validator
+```
+
+```bash
+# Step 2: Add the plugin path to your Claude Code settings
+# Open (or create) ~/.claude/settings.json and add:
+```
+
+```json
+{
+  "permissions": {},
+  "plugins": [
+    "~/claude-plugins/claude-startup-validator/plugins/claude-startup-validator"
+  ]
+}
+```
+
+```bash
+# Step 3: Restart Claude Code — the skill is now available globally
+```
+
+### Method 3: Per-Project Plugin
+
+Add it to a specific project so it only loads in that workspace:
+
+```bash
+# Step 1: In your project root, clone the repo
+git clone https://github.com/nmsavaliya/claude-startup-validator.git .claude/plugins/claude-startup-validator
+```
+
+Create `.claude/settings.local.json` in your project root:
+
+```json
+{
+  "plugins": [
+    ".claude/plugins/claude-startup-validator/plugins/claude-startup-validator"
+  ]
+}
+```
+
+### Method 4: Manual Download (Standalone Skill)
+
+If you prefer not to use git or the plugin system:
 
 ```bash
 # Step 1: Create the directory structure
@@ -121,8 +174,8 @@ mkdir -p ~/.claude/skills/ai-startup-opportunity-generator/assets
 ```
 
 ```bash
-# Step 2: Download each file (replace nmsavaliya with the actual GitHub username)
-BASE_URL="https://raw.githubusercontent.com/nmsavaliya/claude-startup-validator/main"
+# Step 2: Download each file
+BASE_URL="https://raw.githubusercontent.com/nmsavaliya/claude-startup-validator/main/plugins/claude-startup-validator/skills/ai-startup-opportunity-generator"
 
 # Core file
 curl -o ~/.claude/skills/ai-startup-opportunity-generator/SKILL.md "$BASE_URL/SKILL.md"
@@ -146,7 +199,7 @@ ls -la ~/.claude/skills/ai-startup-opportunity-generator/references/
 # You should see: SKILL.md, and 6 files in references/
 ```
 
-### Method 3: Claude.ai (Projects)
+### Method 5: Claude.ai (Projects)
 
 For users who prefer the Claude.ai web interface:
 
@@ -158,7 +211,7 @@ Step 3: Name it "AI Startup Opportunity Generator"
 
 ```
 Step 4: Click "Set custom instructions"
-Step 5: Open the SKILL.md file from this repository
+Step 5: Open the SKILL.md file from: plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/SKILL.md
 Step 6: Copy the ENTIRE content (everything after the --- frontmatter closing ---)
 Step 7: Paste it into the custom instructions box
 Step 8: Click "Save"
@@ -166,7 +219,7 @@ Step 8: Click "Save"
 
 ```
 Step 9: Click "Add content" → "Upload files"
-Step 10: Upload ALL 6 files from the references/ folder:
+Step 10: Upload ALL 6 files from plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/:
    - scoring-rubric.md
    - output-schema.md
    - productization-templates.md
@@ -176,7 +229,7 @@ Step 10: Upload ALL 6 files from the references/ folder:
 ```
 
 ```
-Step 11: Optionally upload assets/example-output.md as an additional reference
+Step 11: Optionally upload plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/assets/example-output.md as an additional reference
 Step 12: Start a new conversation within the project
 Step 13: Ask: "Give me 5 AI startup ideas in healthcare"
 ```
@@ -186,116 +239,27 @@ Step 13: Ask: "Give me 5 AI startup ideas in healthcare"
 - Reference files uploaded as project knowledge are automatically available
 - You don't need to tell Claude to "use the skill" — the project instructions handle that
 
-### Method 4: Claude Cowork
+### Method 6: Claude Cowork
 
 ```
-Step 1: Add the entire ai-startup-opportunity-generator/ folder to your
-        Cowork workspace's skills directory
+Step 1: Clone the repository into your Cowork workspace:
+        git clone https://github.com/nmsavaliya/claude-startup-validator.git
 
-Step 2: Ensure your workspace can access:
-        - SKILL.md (core logic)
-        - references/ directory (all 6 files)
-        - assets/ directory (example output)
+Step 2: Add the plugins/claude-startup-validator/ folder to your
+        Cowork workspace's plugins directory
 
-Step 3: The skill auto-triggers when you discuss:
+Step 3: Ensure your workspace can access:
+        - plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/SKILL.md (core logic)
+        - plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/ (all 6 files)
+        - plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/assets/ (example output)
+
+Step 4: The skill auto-triggers when you discuss:
         - AI startup ideas
         - Business opportunities
         - Workflow automation
         - Competitor analysis for AI products
         - Startup failure analysis
 ```
-
-### Method 5: As a Claude Code Plugin (Recommended)
-
-This is the proper way to install — Claude Code auto-discovers the skill from the plugin structure.
-
-#### Option A: Clone and add to Claude Code settings (Global)
-
-```bash
-# Step 1: Clone the repo anywhere you like
-git clone https://github.com/nmsavaliya/claude-startup-validator.git ~/claude-plugins/claude-startup-validator
-```
-
-```bash
-# Step 2: Add plugin path to your Claude Code settings
-# Open ~/.claude/settings.json and add:
-```
-
-```json
-{
-  "permissions": {},
-  "plugins": [
-    "~/claude-plugins/claude-startup-validator"
-  ]
-}
-```
-
-```bash
-# Step 3: Restart Claude Code — the skill is now available globally
-```
-
-#### Option B: Per-project plugin
-
-Add it to a specific project so it only loads in that workspace:
-
-```bash
-# Step 1: In your project root, create the settings directory
-mkdir -p .claude
-
-# Step 2: Clone the plugin into your project (or reference a global path)
-git clone https://github.com/nmsavaliya/claude-startup-validator.git .claude/plugins/claude-startup-validator
-```
-
-```bash
-# Step 3: Create .claude/settings.local.json in your project:
-```
-
-```json
-{
-  "plugins": [
-    ".claude/plugins/claude-startup-validator"
-  ]
-}
-```
-
-#### Option C: Direct npm/registry install (if published)
-
-```bash
-# If published to the Claude Code plugin registry:
-claude install nmsavaliya/claude-startup-validator
-```
-
-> Note: This method is available only if the plugin is published to the Claude Code plugin registry.
-
-#### Plugin Structure
-
-The repo follows the official Claude Code plugin format with `.claude-plugin/plugin.json` manifest and auto-discovery:
-
-```
-claude-startup-validator/
-├── .claude-plugin/
-│   └── plugin.json                             # Plugin manifest (required)
-├── skills/
-│   └── ai-startup-opportunity-generator/       # Skill (auto-discovered)
-│       ├── SKILL.md                            # Core skill logic
-│       ├── references/                         # Reference files (loaded on demand)
-│       │   ├── scoring-rubric.md
-│       │   ├── output-schema.md
-│       │   ├── productization-templates.md
-│       │   ├── industry-playbook.md
-│       │   ├── competitor-analysis-framework.md
-│       │   └── failure-patterns.md
-│       └── assets/
-│           └── example-output.md               # Complete example output
-├── README.md                                   # Documentation
-└── LICENSE                                     # MIT License
-```
-
-**How auto-discovery works:**
-1. Claude Code reads `.claude-plugin/plugin.json` when the plugin loads
-2. It scans the `skills/` directory for subdirectories containing `SKILL.md`
-3. Each skill's `name` and `description` from the YAML frontmatter register in Claude's available skills
-4. When your prompt matches the skill description, Claude automatically activates it and follows the instructions
 
 ### Verifying Installation
 
@@ -694,7 +658,7 @@ Pain: 8 | Budget: 7 | Automation: 8 | MVP: 7 | Distribution: 6 | Differentiation
 Composite: 7.35/10 — Strong
 ```
 
-See [assets/example-output.md](assets/example-output.md) for a complete 28-field example.
+See [example-output.md](plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/assets/example-output.md) for a complete 28-field example.
 
 ---
 
@@ -704,7 +668,7 @@ See [assets/example-output.md](assets/example-output.md) for a complete 28-field
 
 The skill defaults to biasing toward **Laravel/full-stack developer** ideas. To change this:
 
-1. Open `SKILL.md`
+1. Open `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/SKILL.md`
 2. Find **Step 9: Personalization Check** (around line 170)
 3. Replace the tech stack list with your preferred stack:
 
@@ -724,7 +688,7 @@ Action Cable, Active Storage, Heroku deployment
 
 ### Adding New Industries
 
-1. Open `references/industry-playbook.md`
+1. Open `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/industry-playbook.md`
 2. Add a new section following this format:
 
 ```markdown
@@ -741,7 +705,7 @@ Action Cable, Active Storage, Heroku deployment
 
 ### Adjusting Scoring Weights
 
-1. Open `references/scoring-rubric.md`
+1. Open `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/scoring-rubric.md`
 2. Modify the weights in the "Dimension Weights" table
 3. Update the composite formula to match
 4. Example: If you value speed over everything:
@@ -757,7 +721,7 @@ Action Cable, Active Storage, Heroku deployment
 
 ### Adding Failure Patterns
 
-1. Open `references/failure-patterns.md`
+1. Open `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/failure-patterns.md`
 2. Add a new numbered section:
 
 ```markdown
@@ -772,7 +736,7 @@ Action Cable, Active Storage, Heroku deployment
 
 ### Adding Productization Templates
 
-1. Open `references/productization-templates.md`
+1. Open `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/references/productization-templates.md`
 2. Add a new template section (F, G, etc.) following the existing format
 3. Include: Pattern description, architecture, Laravel stack, pricing model, timeline, key risk
 
@@ -783,31 +747,36 @@ Action Cable, Active Storage, Heroku deployment
 ```
 claude-startup-validator/
 │
-├── plugin.json                                 # Plugin manifest for Claude Code
-├── SKILL.md                                    # Core skill logic (277 lines)
-│   ├── YAML frontmatter                        #   name + description (triggering)
-│   ├── Role definition                         #   Expert AI startup strategist
-│   ├── Input mode detection (5 modes)          #   How to interpret user requests
-│   ├── Behavior modes (7 modes)                #   How deep to go
-│   ├── 12-step thinking procedure              #   The analytical engine
-│   ├── Scoring system summary                  #   6 dimensions + weights
-│   ├── 28-field output format                  #   What every idea includes
-│   ├── Quality rules                           #   What to include/exclude
-│   └── Examples                                #   2 worked examples
+├── .claude-plugin/
+│   └── marketplace.json                        # Marketplace catalog (for /plugin install)
 │
-├── README.md                                   # This file
-├── LICENSE                                     # MIT License
+├── plugins/
+│   └── claude-startup-validator/               # The plugin
+│       ├── .claude-plugin/
+│       │   └── plugin.json                     # Plugin manifest (auto-discovery)
+│       └── skills/
+│           └── ai-startup-opportunity-generator/
+│               ├── SKILL.md                    # Core skill logic (277 lines)
+│               │   ├── YAML frontmatter        #   name + description (triggering)
+│               │   ├── Role definition         #   Expert AI startup strategist
+│               │   ├── Input/Behavior modes    #   5 input + 7 behavior modes
+│               │   ├── 12-step thinking engine #   The analytical engine
+│               │   ├── Scoring + output format #   6 dimensions + 28 fields
+│               │   └── Quality rules + examples
+│               │
+│               ├── references/                 # Loaded on demand
+│               │   ├── scoring-rubric.md       #   Full 1-10 anchored scales
+│               │   ├── output-schema.md        #   28-field schema + formats
+│               │   ├── productization-templates.md  # 5 templates (A-E)
+│               │   ├── industry-playbook.md    #   10 pre-analyzed industries
+│               │   ├── competitor-analysis-framework.md
+│               │   └── failure-patterns.md     #   10 failure modes + checklist
+│               │
+│               └── assets/
+│                   └── example-output.md       #   Complete 28-field example
 │
-├── references/                                 # Deep reference material (loaded on demand)
-│   ├── scoring-rubric.md                       #   Full 1-10 anchored scales per dimension
-│   ├── output-schema.md                        #   28-field schema + JSON/table/card formats
-│   ├── productization-templates.md             #   5 architectural templates (A-E)
-│   ├── industry-playbook.md                    #   Pre-analyzed data for 10 industries
-│   ├── competitor-analysis-framework.md        #   How to map competitive landscapes
-│   └── failure-patterns.md                     #   10 failure modes + pre-mortem checklist
-│
-└── assets/                                     # Supporting materials
-    └── example-output.md                       #   Complete 28-field example output
+├── README.md
+└── LICENSE
 ```
 
 ### How Files Work Together
@@ -822,14 +791,16 @@ SKILL.md loads (always)
         ├─ Detects behavior mode (ideation/deep/ranking/MVP/validation/competitor/failure)
         ├─ Runs 12-step thinking procedure
         │
-        ├─ Step 8 → reads references/scoring-rubric.md
-        ├─ Step 10 → reads references/productization-templates.md
-        ├─ Step 11 → reads references/competitor-analysis-framework.md
-        ├─ Step 11 → reads references/industry-playbook.md (if industry known)
-        ├─ Step 12 → reads references/failure-patterns.md
+        ├─ Step 8  → reads scoring-rubric.md
+        ├─ Step 10 → reads productization-templates.md
+        ├─ Step 11 → reads competitor-analysis-framework.md
+        ├─ Step 11 → reads industry-playbook.md (if industry known)
+        ├─ Step 12 → reads failure-patterns.md
         │
-        └─ Output → formatted per references/output-schema.md
+        └─ Output → formatted per output-schema.md
 ```
+
+All reference files are in the skill's `references/` directory and loaded on demand.
 
 ---
 
@@ -866,6 +837,23 @@ Add "as JSON" or "export JSON" to any prompt. Example: `Give me 5 AI startup ide
 Yes! Edit `references/industry-playbook.md` and add a new section following the existing format. See [Customization](#adding-new-industries).
 
 ### The skill isn't triggering in Claude Code — what do I check?
+
+**If installed via `/plugin install`:**
+
+1. Run `/plugin` and check the "Installed" tab for `claude-startup-validator`
+2. If not listed, check "Marketplaces" tab for `nmsavaliya/claude-startup-validator`
+3. Restart Claude Code after installing
+4. Use explicit trigger phrases: "AI startup ideas", "AI business opportunities"
+
+**If installed via clone + settings.json:**
+
+1. Verify the plugin path in `~/.claude/settings.json` points to `plugins/claude-startup-validator/`
+2. Check that `plugins/claude-startup-validator/.claude-plugin/plugin.json` exists
+3. Verify `plugins/claude-startup-validator/skills/ai-startup-opportunity-generator/SKILL.md` exists
+4. Start a new Claude Code session (plugins are loaded at session start)
+
+**If installed as a standalone skill:**
+
 1. Verify `SKILL.md` exists at `~/.claude/skills/ai-startup-opportunity-generator/SKILL.md`
 2. Check that the YAML frontmatter is valid (name and description fields present)
 3. Start a new Claude Code session (skills are loaded at session start)
