@@ -207,77 +207,95 @@ Step 3: The skill auto-triggers when you discuss:
 
 ### Method 5: As a Claude Code Plugin (Recommended)
 
-The easiest way to install — one command:
+This is the proper way to install — Claude Code auto-discovers the skill from the plugin structure.
 
-#### Option A: Install from GitHub
-
-```bash
-claude plugin add nmsavaliya/claude-startup-validator
-```
-
-That's it! The plugin is now available in all your Claude Code sessions.
-
-#### Option B: Install locally (for development)
+#### Option A: Clone and add to Claude Code settings (Global)
 
 ```bash
-# Clone the repo
-git clone git@github.com:nmsavaliya/claude-startup-validator.git
-
-# Install as local plugin
-claude plugin add ./claude-startup-validator
+# Step 1: Clone the repo anywhere you like
+git clone https://github.com/nmsavaliya/claude-startup-validator.git ~/claude-plugins/claude-startup-validator
 ```
 
-#### Option C: Per-project plugin
+```bash
+# Step 2: Add plugin path to your Claude Code settings
+# Open ~/.claude/settings.json and add:
+```
+
+```json
+{
+  "permissions": {},
+  "plugins": [
+    "~/claude-plugins/claude-startup-validator"
+  ]
+}
+```
+
+```bash
+# Step 3: Restart Claude Code — the skill is now available globally
+```
+
+#### Option B: Per-project plugin
 
 Add it to a specific project so it only loads in that workspace:
 
 ```bash
-# In your project root
+# Step 1: In your project root, create the settings directory
 mkdir -p .claude
+
+# Step 2: Clone the plugin into your project (or reference a global path)
+git clone https://github.com/nmsavaliya/claude-startup-validator.git .claude/plugins/claude-startup-validator
 ```
 
-Create `.claude/plugins.json` in your project:
+```bash
+# Step 3: Create .claude/settings.local.json in your project:
+```
 
 ```json
 {
   "plugins": [
-    "nmsavaliya/claude-startup-validator"
+    ".claude/plugins/claude-startup-validator"
   ]
 }
 ```
 
-#### Option D: Add to Claude Code settings (global)
+#### Option C: Direct npm/registry install (if published)
 
-Edit `~/.claude/settings.json`:
-
-```json
-{
-  "plugins": [
-    "/path/to/claude-startup-validator"
-  ]
-}
+```bash
+# If published to the Claude Code plugin registry:
+claude install nmsavaliya/claude-startup-validator
 ```
+
+> Note: This method is available only if the plugin is published to the Claude Code plugin registry.
 
 #### Plugin Structure
 
-The repo includes a `plugin.json` that Claude Code recognizes automatically:
+The repo follows the official Claude Code plugin format with `.claude-plugin/plugin.json` manifest and auto-discovery:
 
 ```
 claude-startup-validator/
-├── plugin.json                                 # Plugin manifest
-├── SKILL.md                                    # Core skill logic
+├── .claude-plugin/
+│   └── plugin.json                             # Plugin manifest (required)
+├── skills/
+│   └── ai-startup-opportunity-generator/       # Skill (auto-discovered)
+│       ├── SKILL.md                            # Core skill logic
+│       ├── references/                         # Reference files (loaded on demand)
+│       │   ├── scoring-rubric.md
+│       │   ├── output-schema.md
+│       │   ├── productization-templates.md
+│       │   ├── industry-playbook.md
+│       │   ├── competitor-analysis-framework.md
+│       │   └── failure-patterns.md
+│       └── assets/
+│           └── example-output.md               # Complete example output
 ├── README.md                                   # Documentation
-├── LICENSE                                     # MIT License
-├── references/                                 # Reference files (loaded on demand)
-│   ├── scoring-rubric.md
-│   ├── output-schema.md
-│   ├── productization-templates.md
-│   ├── industry-playbook.md
-│   ├── competitor-analysis-framework.md
-│   └── failure-patterns.md
-└── assets/
-    └── example-output.md                       # Complete example output
+└── LICENSE                                     # MIT License
 ```
+
+**How auto-discovery works:**
+1. Claude Code reads `.claude-plugin/plugin.json` when the plugin loads
+2. It scans the `skills/` directory for subdirectories containing `SKILL.md`
+3. Each skill's `name` and `description` from the YAML frontmatter register in Claude's available skills
+4. When your prompt matches the skill description, Claude automatically activates it and follows the instructions
 
 ### Verifying Installation
 
